@@ -1,0 +1,35 @@
+name: Rust Bench matrix [ubuntu-latest, windows-latest, macos-latest] with inputs.toolchain = stable
+
+on:
+  workflow_call:
+    inputs:
+      toolchain:
+        description: 'Rust toolchain'
+        required: false
+        type: string
+        default: '["stable"]'
+      os:
+        description: 'OS'
+        required: false
+        type: string
+        default: '["ubuntu-latest"]'
+
+jobs:
+  bench:
+    strategy:
+      matrix:
+        toolchain: ${{ fromJson( inputs.toolchain ) }}
+        os: ${{ fromJson( inputs.os) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ inputs.toolchain }}
+          override: true
+      - uses: taiki-e/install-action@nextest
+      - name: Test
+        run: |
+          cargo bench --all-features
+
+        
