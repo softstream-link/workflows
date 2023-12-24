@@ -1,0 +1,26 @@
+name: Rust Test
+
+on:
+  workflow_call:
+    inputs:
+      toolchain:
+        description: 'The toolchain to use for testing'
+        required: true
+        type: string
+
+jobs:
+  test-linux:
+    uses: ./.github/workflows/rust-test-toolchain-os.yml
+    with:
+      toolchain: ${{ inputs.toolchain }}
+      os: ubuntu-latest
+  test-windows:
+    uses: ./.github/workflows/rust-test-toolchain-os.yml
+    with:
+      toolchain: ${{ inputs.toolchain }}
+      os: windows-latest
+  test-macos:
+    uses: ./.github/workflows/rust-test-toolchain-os.yml
+    with:
+      toolchain: ${{ inputs.toolchain }}
+      os: macos-latest
