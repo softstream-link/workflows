@@ -1,4 +1,4 @@
-name: Rust Test
+name: Rust Test on choosen OS and toolchain
 
 on:
   workflow_call:
