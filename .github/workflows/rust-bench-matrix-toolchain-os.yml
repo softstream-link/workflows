@@ -3,12 +3,12 @@ name: Rust Bench matrix [ubuntu-latest, windows-latest, macos-latest] with input
 on:
   workflow_call:
     inputs:
-      bench_toolchain:
+      toolchain:
         description: 'Rust toolchain'
         required: false
         type: string
         default: '["stable"]'
-      bench_os:
+      os:
         description: 'OS'
         required: false
         type: string
@@ -18,8 +18,9 @@ jobs:
   bench:
     strategy:
       matrix:
-        toolchain: ${{ fromJson( inputs.bench_toolchain ) }}
-        os: ${{ fromJson( inputs.bench_os) }}
+        toolchain: ${{ fromJson( inputs.toolchain ) }}
+        os: ${{ fromJson( inputs.os) }}
+    
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
