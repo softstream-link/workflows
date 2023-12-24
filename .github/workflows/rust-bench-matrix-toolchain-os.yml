@@ -3,12 +3,12 @@ name: Rust Bench matrix [ubuntu-latest, windows-latest, macos-latest] with input
 on:
   workflow_call:
     inputs:
-      toolchain:
+      bench_toolchain:
         description: 'Rust toolchain'
         required: false
         type: string
         default: '["stable"]'
-      os:
+      bench_os:
         description: 'OS'
         required: false
         type: string
@@ -18,14 +18,14 @@ jobs:
   bench:
     strategy:
       matrix:
-        toolchain: ${{ fromJson( inputs.toolchain ) }}
-        os: ${{ fromJson( inputs.os) }}
+        toolchain: ${{ fromJson( inputs.bench_toolchain ) }}
+        os: ${{ fromJson( inputs.bench_os) }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: ${{ inputs.toolchain }}
+          toolchain: ${{ matrix.toolchain }}
           override: true
       - uses: taiki-e/install-action@nextest
       - name: Test

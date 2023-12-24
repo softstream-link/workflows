@@ -3,12 +3,12 @@ name: Rust Test On matrix toolchain * os
 on:
   workflow_call:
     inputs:
-      toolchain:
+      test_toolchain:
         description: 'Rust toolchain'
         required: false
         type: string
         default: '["stable", "nightly"]'
-      os:
+      test_os:
         description: 'OS'
         required: false
         type: string
@@ -18,8 +18,8 @@ jobs:
   test:
     strategy:
       matrix:
-        toolchain: ${{ fromJson( inputs.toolchain) }}
-        os: ${{ fromJson( inputs.os) }}
+        toolchain: ${{ fromJson( inputs.test_toolchain) }}
+        os: ${{ fromJson( inputs.test_os) }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
