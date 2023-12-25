@@ -13,6 +13,11 @@ on:
         required: false
         type: string
         default: '["ubuntu-latest", "windows-latest", "macos-latest"]'
+      fail-fast:
+        description: 'Fail fast'
+        required: false
+        type: boolean
+        default: true  
 
 jobs:
   bench:
@@ -20,6 +25,7 @@ jobs:
       matrix:
         toolchain: ${{ fromJson( inputs.toolchain ) }}
         os: ${{ fromJson( inputs.os) }}
+        fail-fast: ${{ inputs.fail-fast }}
     
     runs-on: ${{ matrix.os }}
     steps:
