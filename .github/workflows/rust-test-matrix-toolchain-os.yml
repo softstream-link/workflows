@@ -21,13 +21,13 @@ on:
     
 jobs:
   test:
-    name: Will execute all unit, doc, and example tests with --all-features + will generate docs
     strategy:
       fail-fast: ${{ inputs.fail-fast }}
       matrix:
         toolchain: ${{ fromJson( inputs.toolchain ) }}
         os: ${{ fromJson( inputs.os ) }}
-    
+        
+    name: test ${{ matrix.os }}/${{ matrix.toolchain }} 
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3

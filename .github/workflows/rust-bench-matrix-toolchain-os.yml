@@ -21,13 +21,13 @@ on:
 
 jobs:
   bench:
-    name: Will execute benchmarks with --all-features 
     strategy:
       fail-fast: ${{ inputs.fail-fast }}
       matrix:
         toolchain: ${{ fromJson( inputs.toolchain ) }}
         os: ${{ fromJson( inputs.os) }}
-    
+        
+    name: bench ${{ matrix.os }}/${{ matrix.toolchain }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
