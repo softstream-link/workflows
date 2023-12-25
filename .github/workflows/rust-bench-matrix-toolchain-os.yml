@@ -21,11 +21,12 @@ on:
 
 jobs:
   bench:
+    name: Will execute benchmarks with --all-features 
     strategy:
+      fail-fast: ${{ inputs.fail-fast }}
       matrix:
         toolchain: ${{ fromJson( inputs.toolchain ) }}
         os: ${{ fromJson( inputs.os) }}
-        fail-fast: ${{ inputs.fail-fast }}
     
     runs-on: ${{ matrix.os }}
     steps:

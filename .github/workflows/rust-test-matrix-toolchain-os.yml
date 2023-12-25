@@ -21,11 +21,12 @@ on:
     
 jobs:
   test:
+    name: Will execute all unit, doc, and example tests with --all-features + will generate docs
     strategy:
+      fail-fast: ${{ inputs.fail-fast }}
       matrix:
-        toolchain: ${{ fromJson( inputs.toolchain) }}
-        os: ${{ fromJson( inputs.os) }}
-        fail-fast: ${{ inputs.fail-fast }}
+        toolchain: ${{ fromJson( inputs.toolchain ) }}
+        os: ${{ fromJson( inputs.os ) }}
     
     runs-on: ${{ matrix.os }}
     steps:
@@ -39,5 +40,5 @@ jobs:
           cargo nextest run --all-features
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
-          cargo doc --all-features
+          RUSTDOCFLAGS="-D warnings" cargo doc --all-features
 
