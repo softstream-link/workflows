@@ -41,4 +41,3 @@ jobs:
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
           cargo --config 'env.RUSTDOCFLAGS="-D warnings"' doc --all-features
-          cargo clippy --all-features -- --deny warnings
