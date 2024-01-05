@@ -48,6 +48,9 @@ jobs:
           environment-name: build_env
           init-shell: bash zsh powershell
         if: ${{ inputs.micromamba-env-file != 'NONE' }}
+      - name: Activate micromamba build_env
+        run: micromamba activate build_env
+        if: ${{ inputs.micromamba-env-file != 'NONE' }}
       - name: Test tests
         run: cargo nextest run --all-features
       - name: Test examples
