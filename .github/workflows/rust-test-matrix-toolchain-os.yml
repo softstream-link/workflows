@@ -63,4 +63,4 @@ jobs:
           cargo nextest run --examples --all-features
           cargo test --doc --all-feature
           cargo doc --no-deps --all-features
-        if: ${{ inputs.micromamba-env-file != 'NONE' }}
+        if: ${{ inputs.micromamba-env-file == 'NONE' }}
