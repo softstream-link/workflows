@@ -44,6 +44,7 @@ jobs:
           tool: nextest
       - uses: mamba-org/setup-micromamba@v1
         with:
+          environment-file: ${{ inputs.micromamba-env-file }}
           init-shell: bash zsh powershell
         if: ${{ inputs.micromamba-env-file != 'NONE' }}
       - name: Test tests
