@@ -18,6 +18,11 @@ on:
         required: false
         type: boolean
         default: true
+      micromamba-env-file:
+        description: 'Create micromamba environment'
+        required: false
+        type: string
+        default: 'NONE'
     
 jobs:
   test:
@@ -34,10 +39,18 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
-      - uses: taiki-e/install-action@nextest
-      - name: Test
-        run: |
-          cargo nextest run --all-features
-          cargo nextest run --examples --all-features
-          cargo test --doc --all-features
-          cargo doc --no-deps --all-features
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: nextest
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          init-shell: bash zsh powershell
+        if: ${{ inputs.micromamba-env-file != 'NONE' }}
+      - name: Test tests
+        run: cargo nextest run --all-features
+      - name: Test examples
+        run: cargo nextest run --examples --all-features
+      - name: Test docs
+        run: cargo test --doc --all-features
+      - name: Test doc creation
+        run: cargo doc --no-deps --all-features
