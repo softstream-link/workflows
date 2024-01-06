@@ -30,6 +30,7 @@ on:
       
 
 jobs:
+
   linux:
     runs-on: ubuntu-latest
     strategy:
@@ -105,7 +106,7 @@ jobs:
           path: ./target/wheels/
 
   pypi-publish:
-    name: publish to pypi
+    name: publish to pypi URL ${{ inputs.repository-url }}
     needs: [linux, windows, macos]
     runs-on: ubuntu-latest
     permissions:
@@ -120,4 +121,4 @@ jobs:
           MATURIN_PYPI_TOKEN: ${{ inputs.pypi-api-token }}
         with:
           command: upload
-          args: --non-interactive --skip-existing *
+          args: --username __token__ --repository-url ${{ inputs.repository-url }} --non-interactive --skip-existing *
