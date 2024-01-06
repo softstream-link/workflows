@@ -120,9 +120,8 @@ jobs:
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:
-          MATURIN_PYPI_TOKEN: "pypi-AgENdGVzdC5weXBpLm9yZwIkNTcwMTZlMmUtNGFmZC00YjkyLThkMDMtNWU0Yzc0MGRmNDlmAAIqWzMsImM0YzkxN2I0LTBlZDMtNDEwYS04YzNkLTA0ZTgxYjAyMDFjOCJdAAAGIMqEGNCjl98YiXHvLSuFo3wemXm4RM4_erv6RxZm27H8"
+          MATURIN_PYPI_TOKEN: ${{ secrets.pypi-api-token }}
           MATURIN_REPOSITORY_URL: ${{ inputs.repository-url }}
         with:
           command: upload
-          # token: ${{ secrets.pypi-api-token }}
           args: --non-interactive --skip-existing *
