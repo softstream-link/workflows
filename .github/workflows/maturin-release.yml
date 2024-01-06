@@ -32,11 +32,6 @@ on:
         type: boolean
         default: true
 
-
-permissions: # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
-  contents: read
-  id-token: write
-
 jobs:
   linux:
     runs-on: ubuntu-latest
@@ -113,6 +108,8 @@ jobs:
     name: upload release to PyPI
     needs: [linux, windows, macos]
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     steps:
       - uses: actions/download-artifact@v3
