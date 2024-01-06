@@ -54,13 +54,13 @@ jobs:
           micromamba activate build_env && 
           cargo nextest run --all-features &&
           cargo nextest run --examples --all-features
-          cargo test --doc --all-feature
+          cargo test --doc --all-features
           cargo doc --no-deps --all-features
         if: ${{ inputs.micromamba-env-file != 'NONE' }}
       - name: Test
         run: |
           cargo nextest run --all-features &&
           cargo nextest run --examples --all-features
-          cargo test --doc --all-feature
+          cargo test --doc --all-features
           cargo doc --no-deps --all-features
         if: ${{ inputs.micromamba-env-file == 'NONE' }}
