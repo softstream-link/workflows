@@ -45,6 +45,7 @@ jobs:
         with:
           target: ${{ matrix.target }}
           working-directory: ${{ inputs.working-directory}}
+          command: build
           args: --release --find-interpreter
           sccache: 'true'
           manylinux: auto
@@ -70,6 +71,7 @@ jobs:
         with:
           target: ${{ matrix.target }}
           working-directory: ${{ inputs.working-directory}}
+          command: build
           args: --release --find-interpreter
           sccache: 'true'
       - name: Upload wheels
@@ -93,6 +95,7 @@ jobs:
         with:
           target: ${{ matrix.target }}
           working-directory: ${{ inputs.working-directory}}
+          command: build
           args: --release --find-interpreter
           sccache: 'true'
       - name: Upload wheels
@@ -111,9 +114,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: wheels
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish to PyPI
+        uses: PyO3/maturin-action@v1
+        env:
+          MATURIN_PYPI_TOKEN: ${{ inputs.pypi-api-token }}
         with:
-          repository-url: ${{ inputs.repository-url }}
-          skip-existing: true
-          verbose: true
-          password: ${{ inputs.pypi-api-token }}
+          command: upload
+          args: --non-interactive --skip-existing *
