@@ -50,7 +50,7 @@ jobs:
             maturin
             pytest
       - name: Test with-in micromamba environment
-        shell: bash -e --login {0}
+        shell: bash -el {0}
         if: ${{ startsWith( matrix.os, 'ubuntu-' ) }} or ${{ startsWith( matrix.os, 'macos-' ) }}
         run: |
           micromamba env list &&
