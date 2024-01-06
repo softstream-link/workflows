@@ -96,7 +96,7 @@ jobs:
         with:
           target: ${{ matrix.target }}
           working-directory: ${{ inputs.working-directory}}
-          args: --release --out dist --find-interpreter
+          args: --release --find-interpreter
           sccache: 'true'
       - name: Upload wheels
         uses: actions/upload-artifact@v3
