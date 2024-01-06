@@ -51,8 +51,6 @@ jobs:
             pytest
       - name: Test with-in micromamba environment
         run: |
-          eval "$(micromamba shell hook)" && 
-          micromamba activate build_env && 
           cargo nextest run --all-features &&
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
