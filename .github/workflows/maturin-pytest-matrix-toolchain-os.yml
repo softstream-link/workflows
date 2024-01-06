@@ -18,7 +18,7 @@ on:
         required: false
         type: boolean
         default: true
-      maturin-prj-dir:
+      working-directory:
         description: 'Maturin project directory'
         required: false
         type: string
@@ -56,6 +56,6 @@ jobs:
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
           cargo doc --no-deps --all-features
-          pushd ${{ inputs.maturin-prj-dir }}
+          pushd ${{ inputs.working-directory }}
           maturin develop
           pytest
