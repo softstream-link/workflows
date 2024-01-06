@@ -23,7 +23,7 @@ on:
         required: false
         type: string
         default: "https://test.pypi.org/legacy/"
-      pypi-token:
+      pypi-api-token:
         description: 'PyPI API token'
         required: true
         type: string
@@ -116,4 +116,4 @@ jobs:
           repository-url: ${{ inputs.repository-url }}
           skip-existing: true
           verbose: true
-          password: ${{ inputs.pypi-token }}
+          password: ${{ inputs.pypi-api-token }}
