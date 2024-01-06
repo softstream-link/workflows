@@ -7,7 +7,7 @@ on:
         description: 'Rust toolchain'
         required: false
         type: string
-        default: '["stable", "nightly"]'
+        default: '["stable"]'
       os:
         description: 'OS'
         required: false
@@ -18,11 +18,11 @@ on:
         required: false
         type: boolean
         default: true
-      micromamba-env-file:
-        description: 'Create micromamba environment'
+      maturin-prj-dir:
+        description: 'Maturin project directory'
         required: false
         type: string
-        default: 'NONE'
+        default: '.'
     
 jobs:
   test:
@@ -44,10 +44,11 @@ jobs:
           tool: nextest
       - uses: mamba-org/setup-micromamba@v1
         with:
-          environment-file: ${{ inputs.micromamba-env-file }}
           environment-name: build_env
           init-shell: bash zsh powershell
-        if: ${{ inputs.micromamba-env-file != 'NONE' }}
+          create-args: >-
+            maturin
+            pytest
       - name: Test with-in micromamba environment
         run: |
           eval "$(micromamba shell hook)" && 
@@ -56,11 +57,7 @@ jobs:
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
           cargo doc --no-deps --all-features
-        if: ${{ inputs.micromamba-env-file != 'NONE' }}
-      - name: Test with-out micromamba environment
-        run: |
-          cargo nextest run --all-features &&
-          cargo nextest run --examples --all-features
-          cargo test --doc --all-features
-          cargo doc --no-deps --all-features
-        if: ${{ inputs.micromamba-env-file == 'NONE' }}
+          pushd ${{ inputs.maturin-prj-dir }}
+          maturin develop
+          pytest
+  
