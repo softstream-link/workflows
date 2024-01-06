@@ -6,24 +6,6 @@
 name: Release wheels
 
 on:
-  pull_request:
-  workflow_dispatch:
-    inputs:
-      working-directory:
-        description: 'Maturin project directory'
-        required: false
-        type: string
-        default: '.'
-      fail-fast:
-        description: 'Fail fast'
-        required: false
-        type: boolean
-        default: true
-      repository-url:
-        description: 'Repository URL'
-        required: false
-        type: string
-        default: 'https://test.pypi.org/legacy/'
   workflow_call:
     inputs:
       working-directory:
@@ -40,7 +22,11 @@ on:
         description: 'Repository URL'
         required: false
         type: string
-        default: 'https://test.pypi.org/legacy/'
+        default: "https://test.pypi.org/legacy/"
+      pypi-token:
+        description: 'PyPI API token'
+        required: true
+        type: string
       
 
 jobs:
@@ -121,20 +107,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-    if: ${{ startsWith(github.ref, 'refs/tags/') }} or ${{ startsWith(inputs.repository-url, 'http://test') }}
     steps:
       - uses: actions/download-artifact@v3
         with:
           name: wheels
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          repository-url: #{{ inputs.repository-url }}
+          repository-url: ${{ inputs.repository-url }}
           skip-existing: true
           verbose: true
-      # - name: Publish to PyPI
-      #   uses: PyO3/maturin-action@v1
-      #   env:
-      #     MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-      #   with:
-      #     command: upload
-      #     args: --non-interactive --skip-existing *
+          password: ${{ inputs.pypi-token }}
