@@ -105,7 +105,7 @@ jobs:
           path: ./target/wheels/
 
   pypi-publish:
-    name: upload release to PyPI
+    name: publish to pypi
     needs: [linux, windows, macos]
     runs-on: ubuntu-latest
     permissions:
