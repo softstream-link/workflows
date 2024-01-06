@@ -33,8 +33,9 @@ on:
         default: true
 
 
-permissions:
+permissions: # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
   contents: read
+  id-token: write
 
 jobs:
   linux:
@@ -108,16 +109,19 @@ jobs:
           name: wheels
           path: ./target/wheels/
 
-  release:
-    name: Release
+  pypi-publish:
+    name: upload release to PyPI
+    needs: [linux, windows, macos]
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    # needs: [linux, windows, macos, sdist]
-    needs: [linux, windows, macos]
     steps:
       - uses: actions/download-artifact@v3
         with:
           name: wheels
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:          
+          skip-existing: true
+          verbose: true
       # - name: Publish to PyPI
       #   uses: PyO3/maturin-action@v1
       #   env:
