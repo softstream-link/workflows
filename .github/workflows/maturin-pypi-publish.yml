@@ -121,4 +121,4 @@ jobs:
           MATURIN_PYPI_TOKEN: ${{ inputs.pypi-api-token }}
         with:
           command: upload
-          args: --username __token__ --repository-url ${{ inputs.repository-url }} --non-interactive --skip-existing *
+          args: --username "__token__" --repository-url "${{ inputs.repository-url }}" --non-interactive --skip-existing *
