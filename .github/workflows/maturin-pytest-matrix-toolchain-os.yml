@@ -51,6 +51,8 @@ jobs:
             pytest
       - name: Test with-in micromamba environment
         run: |
+          micromamba env list &&
+          env &&
           cargo nextest run --all-features &&
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
