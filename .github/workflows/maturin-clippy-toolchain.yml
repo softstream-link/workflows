@@ -1,0 +1,31 @@
+name: Rust Clippy
+
+on:
+  workflow_call:
+    inputs:
+      toolchain:
+        description: 'Rust toolchain'
+        required: false
+        type: string
+        default: 'stable'
+    
+jobs:
+  clippy:
+    runs-on: ubuntu-latest
+    name: clippy ${{ inputs.toolchain }} 
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ inputs.toolchain }}
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: build_env
+          init-shell: bash zsh powershell
+          create-args: >-
+            maturin
+            pytest
+      - name: Clippy Deny Warnings
+        shell: bash -el {0}
+        run: |
+          cargo clippy --all-features -- --deny warnings

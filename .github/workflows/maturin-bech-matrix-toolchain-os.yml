@@ -1,4 +1,4 @@
-name: Rust Test On matrix toolchain * os
+name: Rust Bench matrix [ubuntu-latest, windows-latest, macos-latest] with inputs.toolchain = stable
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ on:
         description: 'Rust toolchain'
         required: false
         type: string
-        default: '["stable", "nightly"]'
+        default: '["stable"]'
       os:
         description: 'OS'
         required: false
@@ -18,6 +18,7 @@ on:
         required: false
         type: boolean
         default: true
+
     
 jobs:
   test:
@@ -27,19 +28,21 @@ jobs:
         toolchain: ${{ fromJson( inputs.toolchain ) }}
         os: ${{ fromJson( inputs.os ) }}
         
-    name: test ${{ matrix.os }}/${{ matrix.toolchain }} 
+    name: bench ${{ matrix.os }}/${{ matrix.toolchain }} 
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
-      - uses: taiki-e/install-action@v2
+      - uses: mamba-org/setup-micromamba@v1
         with:
-          tool: nextest
-      - name: Test
+          environment-name: build_env
+          init-shell: bash zsh powershell
+          create-args: >-
+            maturin
+            pytest
+      - name: Bench
+        shell: bash -el {0}
         run: |
-          cargo nextest run --all-features &&
-          cargo nextest run --examples --all-features
-          cargo test --doc --all-features
-          cargo doc --no-deps --all-features
+          cargo bench --all-features

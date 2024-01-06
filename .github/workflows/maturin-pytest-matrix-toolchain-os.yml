@@ -1,4 +1,4 @@
-name: Rust Test On matrix toolchain * os
+name: Rust Test + Maturin PyTest On matrix toolchain * os
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ on:
         description: 'Rust toolchain'
         required: false
         type: string
-        default: '["stable"]'
+        default: '["stable", "nightly"]'
       os:
         description: 'OS'
         required: false
@@ -49,12 +49,9 @@ jobs:
           create-args: >-
             maturin
             pytest
-      - name: Test with-in micromamba environment
+      - name: Test
         shell: bash -el {0}
-        if: ${{ startsWith( matrix.os, 'ubuntu-' ) }} or ${{ startsWith( matrix.os, 'macos-' ) }}
         run: |
-          micromamba env list &&
-          env &&
           cargo nextest run --all-features &&
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
@@ -62,7 +59,3 @@ jobs:
           pushd ${{ inputs.maturin-prj-dir }}
           maturin develop
           pytest
-        
-  
-  # eval "$(micromamba shell hook)" && 
-  # micromamba activate build_env && 
