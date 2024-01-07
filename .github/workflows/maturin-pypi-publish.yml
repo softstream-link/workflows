@@ -23,12 +23,12 @@ on:
         required: false
         type: boolean
         default: true
-      repository-url:
-        description: 'Repository URL'
+      environment:  # needs both environment and secrets to work https://github.com/actions/runner/issues/1490
+        description: 'github environment from which secrets.PYPI_API_TOKEN & env.PYPI_UPLOAD_URL are loaded'
         required: false
         type: string
-        default: "https://test.pypi.org/legacy/"
-    secrets:
+        default: 'test'
+    secrets: # needs both environment and secrets to work https://github.com/actions/runner/issues/1490
       PYPI_API_TOKEN:
         description: 'PyPI API token'
         required: true      
@@ -116,7 +116,7 @@ jobs:
           path: ./target/wheels/
 
   pypi-publish:
-    name: publish to pypi URL ${{ inputs.repository-url }}
+    name: publish to pypi using environment='${{ inputs.environment }}'
     needs: [linux, windows, macos]
     if: |
       always() &&
@@ -124,6 +124,7 @@ jobs:
       (needs.windows.result == 'success' || needs.windows.result == 'skipped') &&
       (needs.macos.result == 'success' || needs.macos.result == 'skipped')
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - uses: actions/download-artifact@v3
         with:
@@ -134,7 +135,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         env:
           MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-          MATURIN_REPOSITORY_URL: ${{ inputs.repository-url }}
+          MATURIN_REPOSITORY_URL: ${{ vars.PYPI_UPLOAD_URL }}
         with:
           command: upload
           args: --non-interactive --skip-existing *
