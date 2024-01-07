@@ -35,7 +35,7 @@ on:
 
 jobs:
 
-  ubuntu-latest:
+  linux:
     runs-on: ubuntu-latest
     if: ${{ contains( fromJson( inputs.os ), 'ubuntu-latest' ) }}
     strategy:
@@ -62,7 +62,7 @@ jobs:
           name: wheels
           path: ./target/wheels/
 
-  windows-latest:
+  windows:
     runs-on: windows-latest
     if: ${{ contains( fromJson( inputs.os ), 'windows-latest' ) }}
     strategy:
@@ -89,7 +89,7 @@ jobs:
           name: wheels
           path: ./target/wheels/
 
-  macos-latest:
+  macos:
     runs-on: macos-latest
     if: ${{ contains( fromJson( inputs.os ), 'macos-latest' ) }}
     strategy:
@@ -117,15 +117,19 @@ jobs:
 
   pypi-publish:
     name: publish to pypi URL ${{ inputs.repository-url }}
-    needs: ${{ fromJson( inputs.os ) }}
+    needs: [linux, windows, macos]
+    if: |
+      always() &&
+      (needs.linux.result == 'success' || needs.linux.result == 'skipped') &&
+      (needs.windows.result == 'success' || needs.windows.result == 'skipped') &&
+      (needs.macos.result == 'success' || needs.macos.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
         with:
           name: wheels
       - name: Info
-        run: echo ""
-          
+        run: echo "PYPI_API_TOKEN='${{ secrets.PYPI_API_TOKEN }}'"
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:
