@@ -18,7 +18,7 @@ on:
         required: false
         type: boolean
         default: true
-      working-directory:
+      extension-module-dir:
         description: 'Maturin project directory'
         required: false
         type: string
@@ -56,6 +56,6 @@ jobs:
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
           cargo doc --no-deps --all-features
-          pushd ${{ inputs.working-directory }}
+          pushd ${{ inputs.extension-module-dir }}
           maturin develop
           pytest
