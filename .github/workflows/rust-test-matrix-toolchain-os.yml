@@ -43,3 +43,4 @@ jobs:
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
           cargo doc --no-deps --all-features
+          cargo package
