@@ -1,0 +1,49 @@
+name: Wheel + Pytest matrix Python version
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: 'Python version'
+        required: false
+        type: string
+        default: '3.12'
+      pyproject-toml-dir:
+        description: 'Directory contains pyproject.toml file'
+        required: false
+        type: string
+        default: '.'
+      environment:  # needs both environment and secrets to work https://github.com/actions/runner/issues/1490
+        description: 'github environment from which secrets.PYPI_API_TOKEN & env.PYPI_UPLOAD_URL are loaded'
+        required: false
+        type: string
+        default: 'test'
+    secrets: # needs both environment and secrets to work https://github.com/actions/runner/issues/1490
+      PYPI_API_TOKEN:
+        description: 'PyPI API token'
+        required: true      
+      
+jobs:
+  pypi-publish:
+    name: publish to pypi using environment='${{ inputs.environment }}' 
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ inputs.python-version }}      
+      - name: Install twine and its dependencies
+        run: pip install twine pytest-cov pytest-mock pytest-sugar
+      - name: Smoke Test pip install ".[test]"
+        run: |
+          pushd ${{ inputs.pyproject-toml-dir }}  
+          pip install ".[test]"
+          pytest
+          popd
+      - name: Build and publish
+        run: |
+          pip wheel --wheel-dir ./target/wheels .
+          twine check ./target/wheels/*.whl
+          twine upload --repository-url "${{ vars.PYPI_UPLOAD_URL }}" --password "${{ secrets.PYPI_API_TOKEN }}" ./target/wheels/*.whl
