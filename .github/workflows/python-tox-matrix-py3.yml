@@ -43,4 +43,4 @@ jobs:
       - name: Install tox and its dependencies
         run: pip install tox pytest-cov pytest-mock pytest-sugar
       - name: Test
-        run: tox run
+        run: tox run --colored=yes
