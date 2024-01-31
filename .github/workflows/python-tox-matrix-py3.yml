@@ -41,6 +41,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}      
       - name: Install tox and its dependencies
-        run: pip install tox tox-cov pytest-mock pytest-sugar
+        run: pip install tox pytest-cov pytest-mock pytest-sugar
       - name: Test
         run: tox run
