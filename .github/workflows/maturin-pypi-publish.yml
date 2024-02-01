@@ -48,7 +48,7 @@ jobs:
       matrix:
         target: [x86_64, aarch64, s390x, ppc64le]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ inputs.python-version }}
@@ -75,7 +75,7 @@ jobs:
       matrix:
         target: [x64]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ inputs.python-version }}
@@ -102,7 +102,7 @@ jobs:
       matrix:
         target: [x86_64, aarch64]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ inputs.python-version }}
