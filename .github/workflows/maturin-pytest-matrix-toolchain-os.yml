@@ -52,6 +52,8 @@ jobs:
       - name: Test
         shell: bash -el {0}
         run: |
+          pwd
+          ls -la
           cargo nextest run --all-features &&
           cargo nextest run --examples --all-features
           cargo test --doc --all-features
