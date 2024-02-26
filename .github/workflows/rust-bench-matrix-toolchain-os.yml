@@ -18,6 +18,12 @@ on:
         required: false
         type: boolean
         default: true
+      with-python-version:
+        description: 'Install python with given version, if value not provided, it will not install python'
+        required: false
+        type: string
+        default: ''
+
 
 jobs:
   bench:
@@ -31,6 +37,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        if: ${{ inputs.with-python-version != '' }}
+        with:
+          python-version: ${{ inputs.with-python-version }}
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.toolchain }}
