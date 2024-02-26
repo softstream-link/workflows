@@ -62,11 +62,10 @@ jobs:
           sccache: 'true'
           manylinux: auto
       - name: Upload wheels
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: linux_wheels
           path: ./target/wheels/
-          overwrite: true
 
   windows:
     runs-on: windows-latest
@@ -90,11 +89,10 @@ jobs:
           args: --release --find-interpreter
           sccache: 'true'
       - name: Upload wheels
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: windows_wheels
           path: ./target/wheels/
-          overwrite: true
 
   macos:
     runs-on: macos-latest
@@ -117,11 +115,10 @@ jobs:
           args: --release --find-interpreter
           sccache: 'true'
       - name: Upload wheels
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: macos_wheels
           path: ./target/wheels/
-          overwrite: true
 
   pypi-publish:
     name: publish to pypi using environment='${{ inputs.environment }}'
@@ -134,9 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: wheels
+      - uses: actions/download-artifact@v4
       - name: Publish to PyPI
         uses: PyO3/maturin-action@v1
         env:
