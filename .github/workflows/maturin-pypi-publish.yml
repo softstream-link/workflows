@@ -64,7 +64,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheel_${{ inputs.os }}_${{ matrix.target }}
+          name: wheel_linux_${{ matrix.target }}
           path: ./target/wheels/
 
   windows:
@@ -91,7 +91,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheel_${{ inputs.os }}_${{ matrix.target }}
+          name: wheel_windows_${{ matrix.target }}
           path: ./target/wheels/
 
   macos:
@@ -117,7 +117,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheel_${{ inputs.os }}_${{ matrix.target }}
+          name: wheel_macos_${{ matrix.target }}
           path: ./target/wheels/
 
   pypi-publish:
