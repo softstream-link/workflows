@@ -139,4 +139,4 @@ jobs:
           MATURIN_REPOSITORY_URL: ${{ vars.PYPI_UPLOAD_URL }}
         with:
           command: upload
-          args: --non-interactive --skip-existing *
+          args: --non-interactive --skip-existing *.whl
