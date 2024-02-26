@@ -66,6 +66,7 @@ jobs:
         with:
           name: wheels
           path: ./target/wheels/
+          overwrite: true
 
   windows:
     runs-on: windows-latest
@@ -93,6 +94,7 @@ jobs:
         with:
           name: wheels
           path: ./target/wheels/
+          overwrite: true
 
   macos:
     runs-on: macos-latest
@@ -119,6 +121,7 @@ jobs:
         with:
           name: wheels
           path: ./target/wheels/
+          overwrite: true
 
   pypi-publish:
     name: publish to pypi using environment='${{ inputs.environment }}'
@@ -131,7 +134,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: wheels
       - name: Publish to PyPI
